@@ -32,9 +32,16 @@ end
 %% Datos para desplazarnos por las matrices
 
  blancos=1;
+
+ %{
+ %Para el rinoceronte
  destFila=256;
  destColumna=345;
-
+%}
+%Para el avion
+ destFila=500;
+ destColumna=482; 
+ 
 
 %% Creamos el sistema de ecuaciones
 
