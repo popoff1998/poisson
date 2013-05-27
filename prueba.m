@@ -3,7 +3,7 @@ M=imread('mascara.bmp');
 F=imread('fuente.jpg');
 D=imread('destino.jpg');
 
-[nfilas,ncolumnas]=size(M); %tamaño de la mascara
+[nfilas,ncolumnas]=size(M); %tamaï¿½o de la mascara
 
 %% Creamos la matriz de adyacencias
 
@@ -11,9 +11,9 @@ A=zeros(nfilas,ncolumnas);
 pixel=0; %numero de pixeles blancos de la mascara
 for i=1:nfilas
     for j=1:ncolumnas
-        if(M(i,j)==255)
-            A(i,j)=pixel+1;
+        if(M(i,j)==255)            
             pixel=pixel+1;
+            A(i,j)=pixel;
         end
     end
 end
@@ -32,8 +32,8 @@ end
 %% Datos para desplazarnos por las matrices
 
  blancos=1;
- destFila=44;
- destColumna=482;
+ destFila=256;
+ destColumna=345;
 
 
 %% Creamos el sistema de ecuaciones
@@ -104,10 +104,29 @@ for i=2:nfilas-1
 end
 
 %% Resolvemos el sistema con las funciones incorporadas en Matlab
-F1=S\R1;
-F2=S\R2;
-F3=S\R3;
-
+tic
+METODO = 2;
+switch METODO
+    case 1
+        %Metodo del residuo casi minimo
+        display 'Metodo residuo casi minimo'
+        F1 = qmr(S,R1);
+        F2 = qmr(S,R2);
+        F3 = qmr(S,R3);
+    case 2
+        %Resolverlo por el gradiente conjugado
+        display 'Metodo gradiente conjugado'
+        F1 = bicg(S,R1,1.e-06,10000);
+        F2 = bicg(S,R2,1.e-06,10000);
+        F3 = bicg(S,R3,1.e-06,10000);
+    case 3
+        %Metodo de Gauss
+        display 'Metodo de gauss'
+        F1=S\R1;
+        F2=S\R2;
+        F3=S\R3;
+end
+toc
 
 %% Creamos la matriz correcion
 C=zeros(nfilas,ncolumnas,3);
